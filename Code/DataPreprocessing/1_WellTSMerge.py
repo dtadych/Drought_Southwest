@@ -3,6 +3,9 @@
 # Goals:
 #  Makes water level (depth to water below land surface in feet) 
 #  timeseries databases
+
+# This script uses data pushed to this repo that has already been pre-processed from a different study.
+# To learn more about that process, see: 
 # %%
 import os
 import pandas as pd
@@ -10,6 +13,45 @@ import numpy as np
 
 datapath = '../../Data/Input/'
 outputpath = '../../Data/Output/Local/'
+
+# %% ---- First Creating the GWSI Water level ----
+# Skip to line 72 if downloading the data from cyverse
+# Read in the the water level file
+GWSI_folder = '../Data/Input_files/GWSI/Data_Tables' #GWSI folder name
+file_name = 'GWSI_WW_LEVELS.xlsx'
+filepath=os.path.join(GWSI_folder, file_name)
+print(filepath)
+
+wl_data = pd.read_excel(filepath, parse_dates=['WLWA_MEASUREMENT_DATE'])
+print(wl_data.info())
+
+# Rename the columns in wl file to something shorter
+wl_data=wl_data.rename(columns={"WLWA_MEASUREMENT_DATE": "date",
+                   "WLWA_SITE_WELL_SITE_ID": "wellid",
+                   "WLWA_DEPTH_TO_WATER": "depth"}, errors="raise")
+# %%
+# Read in the file containing basin codes
+file_name = 'GWSI_SITES.xlsx'
+filepath=os.path.join(GWSI_folder, file_name)
+print(filepath)
+
+basin_data = pd.read_excel(filepath)
+print(basin_data.info())
+
+# Rename the columns in basin file to something shorter
+basin_data=basin_data.rename(columns={"SITE_WELL_SITE_ID": "wellid",
+                   "SITE_ADWBAS_CODE_ENTRY": "basinid"}, errors="raise")
+
+# print number of columns
+basin_data['basinid'].nunique()            
+# %%
+# Merge basin codes and water levels by wellid into new datatable called wl_data2
+wl_data2 = wl_data.merge(basin_data, left_on='wellid', right_on='wellid')
+print(wl_data2.info())
+
+#%%
+# Output wl_data2 to a csv in the specified directory
+wl_data2.to_csv(outputpath+'wl_data3.csv')
 
 # %% 
 # ----- Import the Data and Shapefiles with Geometries -----
