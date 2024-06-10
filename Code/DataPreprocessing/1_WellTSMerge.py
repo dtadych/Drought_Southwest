@@ -17,7 +17,8 @@ outputpath = '../../Data/Output/Local/'
 # %% ---- First Creating the GWSI Water level ----
 # Skip to line 72 if downloading the data from cyverse
 # Read in the the water level file
-GWSI_folder = '../Data/Input_files/GWSI/Data_Tables' #GWSI folder name
+foldername = 'GWSI_ZIP_20240401' # Enter the unzipped file name here
+GWSI_folder = f'{datapath}Shapefiles/{foldername}/Data_Tables' #GWSI folder name
 file_name = 'GWSI_WW_LEVELS.xlsx'
 filepath=os.path.join(GWSI_folder, file_name)
 print(filepath)
@@ -51,7 +52,7 @@ print(wl_data2.info())
 
 #%%
 # Output wl_data2 to a csv in the specified directory
-wl_data2.to_csv(outputpath+'wl_data3.csv')
+wl_data2.to_csv(outputpath+'wl_data4.csv')
 
 # %% 
 # ----- Import the Data and Shapefiles with Geometries -----
@@ -66,8 +67,11 @@ pd.options.display.float_format = '{:.2f}'.format
 print(wells55.info())
 
 # Read in GWSI collated water level data
-filename = 'wl_data3.csv'
-filepath = os.path.join(datapath, filename)
+# filename = 'wl_data3.csv'
+# filepath = os.path.join(datapath, filename)
+
+filename = 'wl_data4.csv'
+filepath = os.path.join(outputpath, filename)
 print(filepath)
 
 water_levels = pd.read_csv(filepath)
@@ -141,8 +145,11 @@ stats2 = stats[['mean','25%','50%','75%']]
 stats2[119:157].plot()
 
 # %%
-narrowedstats = stats[110:158]
+narrowedstats = stats[110:160]
 narrowedstats
+
+# %%
+narrowedstats['mean'].plot()
 # %%
 narrowedstats.to_csv(outputpath+"state_average_WL_updated.csv")
 
