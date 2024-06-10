@@ -3,21 +3,20 @@
 Run items in this folder to move on to drought analysis.
 
 ### Requirements:
- - Download ADWR's groundwater databases.
-   - <a href = ''>Well Registry </a>: catalog of all well permits in Arizona
-   - <a href= 'https://www.azwater.gov/sites/default/files/zip/GWSI_ZIP_20240401.zip'>Groundwater Site Inventory (GWSI)</a>: long-term water level measurements
+ 1. Download ADWR's groundwater databases.
+     - <a href = ''>Well Registry </a>: catalog of all well permits in Arizona
+     - <a href= 'https://www.azwater.gov/sites/default/files/zip/GWSI_ZIP_20240401.zip'>Groundwater Site Inventory (GWSI)</a>: long-term water level measurements
       <br> - *Note* - This code uses the excel form of this database found on a different webpage than Well Registry. 
-   - Make sure to unzip all files, then move to Data/Input/Shapefiles folder
- - Download the latest <a href=' https://www2.csr.utexas.edu/grace/RL0602_mascons.html'>GRACE data</a>.
- - Move these files into the Data/Input/Shapefiles folder.
- - Download "georeg_reproject_fixed" files from our <a href=' https://datacommons.cyverse.org/browse/iplant/home/shared/commons_repo/curated/Tadych_AzGroundwaterSpatialAnalysis_Aug2023/Data/Shapefiles'>Cyverse database </a>
-
- - Place in Data/Input/Shapefiles folder.
+     - Make sure to unzip all files, then move to Data/Input/Shapefiles folder
+2. Download the latest <a href=' https://www2.csr.utexas.edu/grace/RL0602_mascons.html'>GRACE data</a>.
+   - Move these files into the Data/Input/Shapefiles folder.
+3. Download "georeg_reproject_fixed" files from our <a href=' https://datacommons.cyverse.org/browse/iplant/home/shared/commons_repo/curated/Tadych_AzGroundwaterSpatialAnalysis_Aug2023/Data/Shapefiles'>Cyverse database </a>
+   - Place in Data/Input/Shapefiles folder.
  
- - Download Drought indices
-   - The dataset needed is from NOA National Centers for Environmental Information averaged for the state of Arizona.
-   - <a href='https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/statewide/time-series/2/pdsi/1/0/1895-2024'> Link to download PDSI</a>, save it as "NOAA_PDSI_Timesseries.csv" in Data/Input folder
-   - <a href='https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/statewide/time-series/2/phdi/1/0/1895-2024'>Link to download PHDI </a>, save it as "NOAA_PHD_Timesseries.csv" in Data/Input
+ 4. Download Drought indices
+     - The dataset needed is from NOAA National Centers for Environmental Information averaged for the state of Arizona.
+     - <a href='https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/statewide/time-series/2/pdsi/1/0/1895-2024'> Link to download PDSI</a>, save it as "NOAA_PDSI_Timeseries.csv" in Data/Input folder
+     - <a href='https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/statewide/time-series/2/phdi/1/0/1895-2024'>Link to download PHDI </a>, save it as "NOAA_PHDI_Timeseries.csv" in Data/Input folder
 
  ### Run Codes
  1. First, need to merge the well databases.  Make sure all filepaths match where the new data has landed.

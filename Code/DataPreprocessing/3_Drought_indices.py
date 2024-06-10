@@ -30,14 +30,14 @@ drought_color = '#ffa6b8'
 wet_color = '#b8d3f2'
 
 # %% Read in the files
-filename = 'NOAA_PDSI_Timesseries.csv'
+filename = 'NOAA_PDSI_Timeseries.csv'
 filepath = os.path.join(inputpath, filename)
 pdsi = pd.read_csv(filepath, header=2)
 pdsi['Date'] = pd.to_datetime(pdsi['Date'], format='%Y%m', errors='coerce').dropna()
 pdsi['In_year'] = pdsi['Date'].dt.year
 pdsi
 
-filename = 'NOAA_PHDI_Timesseries.csv'
+filename = 'NOAA_PHDI_Timeseries.csv'
 filepath = os.path.join(inputpath, filename)
 phdi = pd.read_csv(filepath, header=2)
 phdi['Date'] = pd.to_datetime(phdi['Date'], format='%Y%m', errors='coerce').dropna()
