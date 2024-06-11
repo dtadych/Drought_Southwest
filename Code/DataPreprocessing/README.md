@@ -4,10 +4,15 @@ Run items in this folder to move on to drought analysis.
 
 ### Requirements:
  1. Download ADWR's groundwater databases.
-     - <a href = ''>Well Registry </a>: catalog of all well permits in Arizona
-     - <a href= 'https://www.azwater.gov/sites/default/files/zip/GWSI_ZIP_20240401.zip'>Groundwater Site Inventory (GWSI)</a>: long-term water level measurements
-      <br> - *Note* - This code uses the excel form of this database found on a different webpage than Well Registry. 
-     - Make sure to unzip all files, then move to Data/Input/Shapefiles folder
+     - <a href = 'https://gisdata2016-11-18t150447874z-azwater.opendata.arcgis.com/datasets/34c92af536ec4047aeaf9d93053dc317_0/explore?location=0.015556%2C-111.970052%2C0.00'>Well Registry </a>: catalog of all well permits in Arizona
+       - First, save it as csv in Data/Input as "Well_Registry_[mmddyyyy].csv
+       - Next, save it as a shapefile in Data/Input/Shapefiles folder
+       - Make sure to unzip all files
+     - Groundwater Site Inventory (GWSI)</a>: long-term water level measurements
+       - First, save the <a href= 'https://www.azwater.gov/sites/default/files/zip/GWSI_ZIP_20240401.zip'>excel form of the database here</a> from the main website into Data/Input
+        <br>  - *Note* - This code uses the excel form of this database found on a different webpage than the gis files.
+       - Next, save it as a shapefile from the <a href='https://gisdata2016-11-18t150447874z-azwater.opendata.arcgis.com/datasets/azwater::gwsi-app/explore?layer=3&location=34.064362%2C-111.834805%2C6.67'>ADWR GIS Data repository here</a> into Data/Input/Shapefiles folder
+       - Make sure to unzip all files
 2. Download the latest <a href=' https://www2.csr.utexas.edu/grace/RL0602_mascons.html'>GRACE data</a>.
    - Move these files into the Data/Input/Shapefiles folder.
 3. Download "georeg_reproject_fixed" files from our <a href=' https://datacommons.cyverse.org/browse/iplant/home/shared/commons_repo/curated/Tadych_AzGroundwaterSpatialAnalysis_Aug2023/Data/Shapefiles'>Cyverse database </a>
@@ -21,14 +26,14 @@ Run items in this folder to move on to drought analysis.
  ### Run Codes
  1. First, need to merge the well databases.  Make sure all filepaths match where the new data has landed.
     - Run 1_WellStaticMerge.py
-      - This database contains all static information about the wells from both databases
+      - This code creates databases that contain all static information about the wells from ADWR
     - Run 1_WellTSMerge.py
-      - This database pulls water level data from both databases to create timeseries of all wells (even if some wells just have one reading)
+      - This code pulls water level data from both databases to create timeseries of all wells (even if some wells just have one reading)
  2. Second, run spatial analysis scripts
     - Run 2_SpatialAnalysisGrace.py
       - This script creates a state average of total water storage
     - Run 2_SpatialAnalysisWells.py
       - This script filters our well database to export wells with at least 15 years of data or more (used for graphing later)
       - Creates water level values by groundwater regulation and by access to surface water
- 3. Third, run DroughtIndices.py
+ 3. Third, run 3_DroughtIndices.py
     - This script will create yearly averages of pdsi and phdi into a nice and cozy dataset
