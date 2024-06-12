@@ -6,7 +6,7 @@ Run these files to conduct the drought analysis and create figures from our pape
 Must have downloaded files and run codes described in DataPreprocessing before continuing.
 
 ### Workflow:
-1. Statewide analysis
+1. Statewide Analysis
 2. Regional Analysis
 3. Individual Wells
 4. Case Studies
