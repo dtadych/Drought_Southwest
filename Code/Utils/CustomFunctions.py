@@ -19,12 +19,34 @@ def pearsonr_pval(x,y):
 def spearmanr_pval(x,y):
         return spearmanr(x,y)[1]
 
-def correlation_test(water_dataset, drought_dataset, drought_indice, lag,test_dataset):
+def correlation_test(water_dataset, drought_dataset, drought_indice, lag,test_dataset_name,colors_list,label_list,vert_axis_label):
+    """ This function is testing to see if there is a correlation between two datasets, 
+    more specificially, a water dataset and a drought dataset.
+
+    Water_dataset: Can be any water dataset
+    drought_dataset: the drought dataset created 
+    drought_indice: The drought indice (in our case, PDSI or PHDI) as a string
+    lag: If doing shifted correlation test
+    test_dataset_name: Name of the test you're running in string form.
+    colors_list: A list of colors
+    label_list: A list of better label strings that match the datasets
+    vert_axis_label#: What to call the vertical axis
+    
+    Example code: 
+    test_name = "ADWR Well Anomalies ("+str(minyear_wells)+"-"+str(maxyear)+")"
+    ds = dtw_anomalys_AZwells
+    drought = drought_indices_wells
+    lag = 0        # If running a shifted correlation analysis,
+                  change this to however many # years; 0 is no lag
+    indice = 'PDSI'
+    result = cf.correlation_test(ds, drought, indice, lag,test_name)
+    print(result)
+    """
     output = ""
     columns = water_dataset.columns
     column_list = water_dataset.columns.tolist()
     
-    output += "Results for "+test_dataset+":\n"
+    output += "Results for "+test_dataset_name+":\n"
     output += 'Kendall Correlation coefficient\n'
     for i in column_list:
         output += ' ' + str(i) + ':\n'
@@ -50,10 +72,74 @@ def correlation_test(water_dataset, drought_dataset, drought_indice, lag,test_da
         output += '  rsq = ' + str(round(r * r, 3)) + '\n'
         output += '  pval = ' + str(round(df1.corr(df2, method=pearsonr_pval), 4)) + '\n'
     
+    fig, ax = plt.subplots(figsize = (7,5))
+    x = drought_dataset[drought_indice]
+    for i,j,k in zip(column_list
+                    # ,reg_colors
+                    # , SW_colors
+                    , colors_list
+                    , label_list
+                    ):
+            y = water_dataset[i]
+            ax.scatter(x,y
+                    , label=k
+                    , color=j
+                    )
+            # Trendline: 1=Linear, 2=polynomial
+            z = np.polyfit(x, y, 1)
+            p = np.poly1d(z)
+            plt.plot(x, p(x),'-'
+                    , color=j
+                    # ,label=(k+' Trendline')
+                    )
+
+
+    ax.set_xlabel(drought_indice)
+    ax.set_ylabel(vert_axis_label)
+    ax.set_title("Comparing "+drought_indice+" with "+test_dataset_name,loc='center')
+    # ax.set_ylim(0,400)
+    fig.set_dpi(600)
+    plt.legend(loc = [1.05, 0.40])
+
     return output
 
 def correlation_test_2y(water_dataset1, water_dataset2, drought_dataset, drought_indice, lag,
-                        test_dataset_name1, test_dataset_name2,y1label,y2label,color1,color2):
+                        test_dataset_name1, test_dataset_name2,y1label,y2label,color1,color2,
+                        vertical_axis_label1,vertical_axis_label2):
+    """ This function is testing to see if there is a correlation between three datasets, 
+    more specificially, 2 water datasets against a drought dataset.
+
+    Water_dataset#: Can be any water dataset
+    drought_dataset: the drought dataset created 
+    drought_indice: The drought indice (in our case, PDSI or PHDI) as a string
+    lag: If doing shifted correlation test
+    test_dataset_name#: Name of the test you're running in string form.
+    y#label: whatever you want on the legend for your dataset as a string
+    color#: any color
+    vert_axis_label#: What to call the vertical axis
+
+    Example code: 
+    ds = lwe_anomalys_grace
+    ds2 = dtw_anomalys_AZwells
+    drought = drought_indices_wells
+
+    indice = 'PDSI'
+    # If running a shifted correlation analysis,
+    #    change this to however many # years; 0 is no lag
+    lag = 0
+
+    betterlabels = 'GRACE' 
+    betterlabels2 = 'AZ Wells' 
+
+    test_name = "GRACE Anomaly Correlation"
+    test_name2 = "ADWR Well Anomalies"
+
+    result = cf.correlation_test_2y(ds,ds2,drought,indice,lag
+                                ,test_name,test_name2
+                                ,betterlabels,betterlabels2
+                                ,grace_color,az_wells_color)
+    print(result)
+    """
     output = ""
     columns = water_dataset1.columns
     column_list = water_dataset1.columns.tolist()
@@ -88,7 +174,7 @@ def correlation_test_2y(water_dataset1, water_dataset2, drought_dataset, drought
         output += '  rsq = ' + str(round(r * r, 3)) + '\n'
         output += '  pval = ' + str(round(df1.corr(df2, method=pearsonr_pval), 4)) + '\n'
     
-    output += ""
+    output += "\n"
     output += "Results for "+test_dataset_name2+":\n"
     output += 'Kendall Correlation coefficient\n'
     for i in column_list2:
@@ -144,8 +230,8 @@ def correlation_test_2y(water_dataset1, water_dataset2, drought_dataset, drought
     ax.set_ylim(ax.get_ylim()[::-1])
 
     ax.set_xlabel(drought_indice)
-    ax2.set_ylabel('LWE Anomalies (cm)')
-    ax.set_ylabel('DTW Anomalies (ft)')  # Set label for the secondary axis
+    ax2.set_ylabel(vertical_axis_label1)
+    ax.set_ylabel(vertical_axis_label2)  # Set label for the secondary axis
     ax.set_title('Comparing ' + drought_indice + ' with DTW and GRACE Anomalies', loc='center')
     fig.set_dpi(600)
 

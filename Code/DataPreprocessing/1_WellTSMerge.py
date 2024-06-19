@@ -165,6 +165,19 @@ max_TS_DB_year.to_csv(outputpath + 'Wells55_GWSI_MAX_WLTS_DB_annual_updated.csv'
 # %%
 min_TS_DB_year.to_csv(outputpath + 'Wells55_GWSI_MIN_WLTS_DB_annual_updated.csv')
 
+
+# %%
+WL_TS_DB_year.loc[323840114320101]
+
+# %% Figuring out where my missing wells went
+randomtestwell = WL_TS_DB_year.loc[323840114320101]
+randomtestwell = pd.DataFrame(randomtestwell)
+randomtestwell = randomtestwell.reset_index()
+del randomtestwell['level_0']
+randomtestwell = randomtestwell.set_index("year")
+randomtestwell = randomtestwell[(randomtestwell.index>=2000)&(randomtestwell.index<=2022)]
+randomtestwell.plot()
+
 # %% Creating totals for mapping
 min_yr = 2000.0
 mx_yr = 2022.0
@@ -177,6 +190,8 @@ columndf = ds.transpose()
 print("Number of wells", len(columndf.columns))
 
 # %%
+ds.loc[323840114320101]
+# %%
 total_WL = ds.sum(axis=1)
 total_WL = pd.DataFrame(total_WL)
 total_WL = total_WL.reset_index()
@@ -186,15 +201,12 @@ total_WL = total_WL.set_index('Combo_ID')
 # total_WL = total_WL['LEN'].astype(int, errors = 'raise')
 total_WL
 # total_WL.to_csv(outputpath+'numberWL_perwell_'+str(min_yr)+'-'+str(mx_yr)+'_updated'+'_thresh'+str(threshold))
-
+# %%
+total_WL.loc[323840114320101]
 # %%
 ds = ds.reset_index()
 # Create a list of narrowed Wells
 well_list = ds[['REGISTRY_ID']]
-well_list
-# %%
-# Converting to int
-well_list['REGISTRY_ID'] = well_list['REGISTRY_ID'].astype(int, errors = 'raise')
 well_list
 # %%
 # Formatting timeseries
@@ -208,16 +220,14 @@ WL_TS.rename(columns={'index':'REGISTRY_ID'}, inplace=True)
 WL_TS
 # %%
 # Add list to the water level database
-narrowedWL_DB = WL_TS.merge(well_list, how="inner")
+narrowedWL_DB = WL_TS.merge(well_list,on='REGISTRY_ID', how="inner")
 narrowedWL_DB.info()
 
-# set index back go REGISTRY_ID
-narrowedWL_DB.set_index('REGISTRY_ID', inplace=True)
-narrowedWL_DB
 # %%
 # set index back go REGISTRY_ID
 narrowedWL_DB.set_index('REGISTRY_ID', inplace=True)
 narrowedWL_DB
+
 # %%
 narrowedWL_DB.to_csv(outputpath+'Wells55_GWSI_WLTS_DB_annual_updated_thresh'+str(threshold)+'.csv')
 # narrowedWL_DB.to_csv(outputpath+'Wells55_GWSI_MAX_WLTS_DB_annual_updated_thresh'+str(threshold)+'.csv')
@@ -305,11 +315,7 @@ well_list2 = ds[['index']]
 # %%
 well_list2.rename(columns={'index':'REGISTRY_ID'}, inplace=True)
 well_list2
-# %%
-# Converting to int
-well_list2['REGISTRY_ID'] = well_list2['REGISTRY_ID'].astype(int, errors = 'raise')
 
-well_list2
 # %% 
 well_list2.columns = well_list.columns
 well_list2
@@ -319,7 +325,7 @@ narrowedWL_DB2 = narrowedWL_DB.copy()
 narrowedWL_DB2 = narrowedWL_DB2.reset_index()
 narrowedWL_DB2
 # %%
-narrowedWL_DB2 = narrowedWL_DB2.merge(well_list2, how="inner")
+narrowedWL_DB2 = narrowedWL_DB2.merge(well_list2, on='REGISTRY_ID',how="inner")
 narrowedWL_DB2.info()
 
 # %%
