@@ -105,7 +105,7 @@ def correlation_test(water_dataset, drought_dataset, drought_indice, lag,test_da
 
 def correlation_test_2y(water_dataset1, water_dataset2, drought_dataset, drought_indice, lag,
                         test_dataset_name1, test_dataset_name2,y1label,y2label,color1,color2,
-                        vertical_axis_label1,vertical_axis_label2):
+                        vertical_axis_label1,vertical_axis_label2,subplot_title):
     """ This function is testing to see if there is a correlation between three datasets, 
     more specificially, 2 water datasets against a drought dataset.
 
@@ -133,6 +133,8 @@ def correlation_test_2y(water_dataset1, water_dataset2, drought_dataset, drought
 
     test_name = "GRACE Anomaly Correlation"
     test_name2 = "ADWR Well Anomalies"
+
+    sublot = 'b)'
 
     result = cf.correlation_test_2y(ds,ds2,drought,indice,lag
                                 ,test_name,test_name2
@@ -229,16 +231,21 @@ def correlation_test_2y(water_dataset1, water_dataset2, drought_dataset, drought
     # Reverse the order of the secondary y-axis
     ax.set_ylim(ax.get_ylim()[::-1])
 
-    ax.set_xlabel(drought_indice)
-    ax2.set_ylabel(vertical_axis_label1)
-    ax.set_ylabel(vertical_axis_label2)  # Set label for the secondary axis
-    ax.set_title('Comparing ' + drought_indice + ' with DTW and GRACE Anomalies', loc='center')
+    # Get the right fontsize for the y-axis
+    ax.tick_params(axis='y', labelsize=14)
+    ax2.tick_params(axis='y', labelsize=14)
+    ax.tick_params(axis='x', labelsize=14, rotation=0)
+
+    ax.set_xlabel(drought_indice, fontsize = 14)
+    ax2.set_ylabel(vertical_axis_label1, fontsize = 14)
+    ax.set_ylabel(vertical_axis_label2, fontsize = 14)  # Set label for the secondary axis
+    ax.set_title('Comparing ' + drought_indice + ' with DTW and GRACE Anomalies\n \n'+subplot_title, loc='left', fontsize = 14)
     fig.set_dpi(600)
 
     # Combine legends for both axes
     lines, labels = ax.get_legend_handles_labels()
     lines2, labels2 = ax2.get_legend_handles_labels()
-    ax.legend(lines + lines2, labels + labels2, loc='lower right')
+    ax.legend(lines + lines2, labels + labels2, loc='lower right', fontsize = 14)
 
     plt.show()
     return output
