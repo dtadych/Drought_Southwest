@@ -27,7 +27,7 @@ import geopandas as gp
 # ----- Import the Data and Shapefiles with Geometries -----
 shapedir = '../../Data/Input/Shapefiles'
 outputpath = '../../Data/Output/Local'
-# %%
+
 wellfilename = "Well_Registry/Well_Registry.shp"
 Wellfp = os.path.join(shapedir, wellfilename)
 wells55shape = gp.read_file(Wellfp)
@@ -85,7 +85,7 @@ wells55_gdf['Combo_ID'] = wells55_gdf['REGISTRY_I']
 wells55_gdf.info()
 
 # -- Stop here if you want to filter the wells55 database for specific uses
-# -- skip to line 98
+# -- skip to line 127
 # %%
 Wells55_GWSI_MasterDB = pd.merge(gwsi_gdf, wells55_gdf, suffixes=['_gwsi','_wells55'], how="outer", 
                                           on=['Combo_ID',"REGISTRY_I", 

@@ -25,14 +25,14 @@ Run items in this folder to move on to drought analysis.
 
  ### Run Codes
  1. First, need to merge the well databases.  Make sure all filepaths match where the new data has landed.
-    - Run 1_WellStaticMerge.py
+    - Run 1a_WellStaticMerge.py
       - This code creates databases that contain all static information about the wells from ADWR
-    - Run 1_WellTSMerge.py
+    - Run 1b_WellTSMerge.py
       - This code pulls water level data from both databases to create timeseries of all wells (even if some wells just have one reading)
  2. Second, run spatial analysis scripts
-    - Run 2_SpatialAnalysisGrace.py
+    - Run 2a_SpatialAnalysisGrace.py
       - This script creates a state average of total water storage
-    - Run 2_SpatialAnalysisWells.py
+    - Run 2b_SpatialAnalysisWells.py
       - This script filters our well database to export wells with at least 15 years of data or more (used for graphing later)
       - Creates water level values by groundwater regulation and by access to surface water
  3. Third, run 3_DroughtIndices.py
