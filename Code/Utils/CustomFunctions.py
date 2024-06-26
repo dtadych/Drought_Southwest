@@ -98,7 +98,7 @@ def correlation_test(water_dataset, drought_dataset, drought_indice, lag,test_da
 
     ax.set_xlabel(drought_indice)
     ax.set_ylabel(vert_axis_label)
-    ax.set_title("Comparing "+drought_indice+" with "+test_dataset_name,loc='center')
+    ax.set_title("Comparing "+drought_indice+" with "+test_dataset_name,loc='center',fontsize=14,pad=15)
     # ax.set_ylim(0,400)
     fig.set_dpi(600)
     plt.legend(loc = [1.05, 0.40])
@@ -241,7 +241,7 @@ def correlation_test_2y(water_dataset1, water_dataset2, drought_dataset, drought
     ax.set_xlabel(drought_indice, fontsize = 14)
     ax2.set_ylabel(vertical_axis_label1, fontsize = 14)
     ax.set_ylabel(vertical_axis_label2, fontsize = 14)  # Set label for the secondary axis
-    ax.set_title('Comparing ' + drought_indice + ' with DTW and GRACE Anomalies\n \n'+subplot_title+')', loc='left', fontsize = 14)
+    ax.set_title('Comparing ' + drought_indice + ' with DTW and GRACE Anomalies\n \n'+subplot_title+')', loc='left', fontsize = 14,pad=15)
     fig.set_dpi(600)
 
     # Combine legends for both axes
@@ -392,7 +392,7 @@ def correlation_test_2y_savefig(water_dataset1, water_dataset2, drought_dataset,
     ax.set_xlabel(drought_indice, fontsize = 14)
     ax2.set_ylabel(vertical_axis_label1, fontsize = 14)
     ax.set_ylabel(vertical_axis_label2, fontsize = 14)  # Set label for the secondary axis
-    ax.set_title('Comparing ' + drought_indice + ' with DTW and GRACE Anomalies\n \n'+subplot_title+')', loc='left', fontsize = 14)
+    ax.set_title('Comparing ' + drought_indice + ' with DTW and GRACE Anomalies\n \n'+subplot_title+')', loc='left', fontsize = 14,pad=15)
     fig.set_dpi(600)
 
     # Combine legends for both axes
@@ -404,4 +404,56 @@ def correlation_test_2y_savefig(water_dataset1, water_dataset2, drought_dataset,
     fig.savefig(figurepath + '/Figure' +figure_number+subplot_title, bbox_inches='tight')
 
     plt.show()
+    return output
+
+def correlation_test_nograph(water_dataset, drought_dataset, drought_indice, lag,test_dataset_name):
+    """ This function is testing to see if there is a correlation between two datasets, 
+    more specificially, a water dataset and a drought dataset.
+
+    Water_dataset: Can be any water dataset
+    drought_dataset: the drought dataset created 
+    drought_indice: The drought indice (in our case, PDSI or PHDI) as a string
+    lag: If doing shifted correlation test
+    test_dataset_name: Name of the test you're running in string form.
+    
+    Example code: 
+    test_name = "ADWR Well Anomalies ("+str(minyear_wells)+"-"+str(maxyear)+")"
+    ds = dtw_anomalys_AZwells
+    drought = drought_indices_wells
+    lag = 0        # If running a shifted correlation analysis,
+                  change this to however many # years; 0 is no lag
+    indice = 'PDSI'
+    result = cf.correlation_test(ds, drought, indice, lag,test_name)
+    print(result)
+    """
+    output = ""
+    columns = water_dataset.columns
+    column_list = water_dataset.columns.tolist()
+    
+    output += "Results for "+test_dataset_name+":\n"
+    output += 'Kendall Correlation coefficient\n'
+    for i in column_list:
+        output += ' ' + str(i) + ':\n'
+        df1 = water_dataset[i]
+        df2 = drought_dataset[drought_indice].shift(lag)
+        output += '  tau = ' + str(round(df1.corr(df2, method='kendall'), 3)) + '\n'
+        output += '  pval = ' + str(round(df1.corr(df2, method=kendall_pval), 4)) + '\n'
+    
+    output += 'Spearman Correlation coefficient\n'
+    for i in column_list:
+        output += ' ' + str(i) + ':\n'
+        df1 = water_dataset[i]
+        df2 = drought_dataset[drought_indice].shift(lag)
+        output += '  rho = ' + str(round(df1.corr(df2, method='spearman'), 3)) + '\n'
+        output += '  pval = ' + str(round(df1.corr(df2, method=spearmanr_pval), 4)) + '\n'
+    
+    output += 'Pearson Correlation coefficient\n'
+    for i in column_list:
+        output += ' ' + str(i) + ':\n'
+        df1 = water_dataset[i]
+        df2 = drought_dataset[drought_indice].shift(lag)
+        r = df1.corr(df2, method='pearson')
+        output += '  rsq = ' + str(round(r * r, 3)) + '\n'
+        output += '  pval = ' + str(round(df1.corr(df2, method=pearsonr_pval), 4)) + '\n'
+
     return output

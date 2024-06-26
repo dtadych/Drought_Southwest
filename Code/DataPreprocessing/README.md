@@ -1,6 +1,6 @@
 # Data Preprocessing
 
-Run items in this folder to move on to drought analysis.
+Run items in this folder to move on to the drought analysis (FigureCreation).
 
 ### Requirements:
  1. Download ADWR's groundwater databases.
