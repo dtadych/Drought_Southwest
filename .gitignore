@@ -1,9 +1,12 @@
-/Data/INput/Shapefiles/GWSI*
+# /Data/Input/Shapefiles/GWSI*
+/Data/Output/Local
+/Data/Input
+/Figures/Local
 *.dbf
 *.csv
 *.shp
 *.shx
-*.png
+# *.png
 *.cpg
 *.prj
 *.qpj
