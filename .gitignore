@@ -1,3 +1,14 @@
-Data/Output/Local
-Figures/LocalOutput
-Data/Input/Shapefiles
+/Data/INput/Shapefiles/GWSI*
+*.dbf
+*.csv
+*.shp
+*.shx
+*.png
+*.cpg
+*.prj
+*.qpj
+*.qmd
+*.xlsx
+*.nc
+*.zip
+*.xml

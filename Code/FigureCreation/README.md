@@ -15,7 +15,7 @@ Must have downloaded files and run codes described in DataPreprocessing before c
 4. Case Studies
     - This is a series of notebooks used in our case study analysis. <br>
         - a. Casestudy_analysis_AllShapes.ipynb
-            - this notebook creates graphs based on a shapefile with multiple polygons.  It was created so we could have more versatility with creating graphs of our case studies.  It is basically a combination of the Regional Analysis workflow and Casestudy workflow. <br>
+            - this notebook creates graphs based on a shapefile with multiple polygons.  It was created so we could have more versatility with creating graphs of our case studies.  It is basically a combination of the Regional Analysis workflow and Casestudy workflow (see b). <br>
         - b. Casestudy_Analysis.ipynb
             - this notebook creates graphs based on a shapefile of a single polygon <br>
         - c. CasestudyAnalysis_FlagstaffSpecial.ipynb
