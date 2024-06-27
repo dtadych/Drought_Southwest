@@ -1,9 +1,10 @@
 # === GRACE Spatial Analysis Script ===
 # written by Danielle Tadych
+
 # The purpose of this script is to analyze GRACE Data for Arizona by points and shapes
-#  - Importing packages: Line 12
-#  - Reading in files: Line 36
-#  - Calculating the average based off a mask (not weighted): Line 212
+#  - Importing packages: Line 8
+#  - Reading in files: Line 19
+#  - Calculating the average based off a mask (not weighted): Line 73
 # %%
 import os
 import matplotlib.pyplot as plt
@@ -12,7 +13,6 @@ import pandas as pd
 import geopandas as gp
 import xarray as xr
 import netCDF4
-import rioxarray
 
 print("Packages Loaded.")
 
@@ -113,5 +113,3 @@ cm_df_year
 cm_df_year.plot() # Test Plot
 # %% Write the csv
 cm_df_year.to_csv(outputpath+'grace_stateavg_yearly.csv')
-
-# %%

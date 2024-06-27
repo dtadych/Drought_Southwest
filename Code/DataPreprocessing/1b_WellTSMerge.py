@@ -1,11 +1,15 @@
-# The purpose of this script is to make multiple timeseries databases using data from the GWSI and Wells55 databases
+# === WELL TIMESERIES DATABASE MERGE ===
 # Written by Danielle Tadych & Matt Ford
-# Goals:
-#  Makes water level (depth to water below land surface in feet) 
-#  timeseries databases
 
-# This script uses data pushed to this repo that has already been pre-processed from a different study.
-# To learn more about that process, see: 
+# The purpose of this script is to make multiple timeseries databases using data from the GWSI and Wells55 databases.
+
+# It formats the longer-term GWSI database and then integrates the Wells Registry database to create a larger timeseries database.  
+# Rows are Well ID's and columns are time (years or months)
+
+# We then filter our database to only include wells with at least 15 years or more.
+
+# One more filter is applied to delete extreme anomalous values.
+
 # %%
 import os
 import pandas as pd
@@ -15,7 +19,6 @@ datapath = '../../Data/Input/'
 outputpath = '../../Data/Output/Local/'
 
 # %% ---- First Creating the GWSI Water level ----
-# Skip to line 72 if downloading the data from cyverse
 # Read in the the water level file
 foldername = 'GWSI_ZIP_20240401' # Enter the unzipped file name here
 GWSI_folder = f'{datapath}Shapefiles/{foldername}/Data_Tables' #GWSI folder name
@@ -67,9 +70,6 @@ pd.options.display.float_format = '{:.2f}'.format
 print(wells55.info())
 
 # Read in GWSI collated water level data
-# filename = 'wl_data3.csv'
-# filepath = os.path.join(datapath, filename)
-
 filename = 'wl_data4.csv'
 filepath = os.path.join(outputpath, filename)
 print(filepath)
@@ -165,24 +165,10 @@ max_TS_DB_year.to_csv(outputpath + 'Wells55_GWSI_MAX_WLTS_DB_annual_updated.csv'
 # %%
 min_TS_DB_year.to_csv(outputpath + 'Wells55_GWSI_MIN_WLTS_DB_annual_updated.csv')
 
-
-# %%
-WL_TS_DB_year.loc[323840114320101]
-
-# %% Figuring out where my missing wells went
-randomtestwell = WL_TS_DB_year.loc[323840114320101]
-randomtestwell = pd.DataFrame(randomtestwell)
-randomtestwell = randomtestwell.reset_index()
-del randomtestwell['level_0']
-randomtestwell = randomtestwell.set_index("year")
-randomtestwell = randomtestwell[(randomtestwell.index>=2000)&(randomtestwell.index<=2022)]
-randomtestwell.plot()
-
 # %% Creating totals for mapping
 min_yr = 2000.0
 mx_yr = 2022.0
 threshold = 15
-# ds = WL_TS_DB_year.transpose()
 ds = LEN_TS_DB_year.loc[:, ('depth', min_yr):('depth', mx_yr)]
 ds = ds.dropna(thresh=threshold) #sets a threshold
 # ds.info()
@@ -198,13 +184,12 @@ total_WL = total_WL.reset_index()
 total_WL = total_WL.rename(columns={"REGISTRY_ID": "Combo_ID",
                    0: "LEN"}, errors="raise")
 total_WL = total_WL.set_index('Combo_ID')
-# total_WL = total_WL['LEN'].astype(int, errors = 'raise')
 total_WL
 # total_WL.to_csv(outputpath+'numberWL_perwell_'+str(min_yr)+'-'+str(mx_yr)+'_updated'+'_thresh'+str(threshold))
-# %%
-total_WL.loc[323840114320101]
+
 # %%
 ds = ds.reset_index()
+
 # Create a list of narrowed Wells
 well_list = ds[['REGISTRY_ID']]
 well_list
@@ -275,21 +260,13 @@ column_list = ds.columns.tolist()
 trend_df = df_interpolated.copy()
 dtw_anomalys_allwells = pd.DataFrame()
 for i in column_list:
-        # Subtracting against the mean
-        # dtw_anomalys[i] = wlanalysis_period[i] - wlanalysis_period[i].mean()
-        
         # Subtracting against the slope
         df = ds[i]
         y=np.array(df.values, dtype=float)
-        # x=np.array(pd.to_datetime(df).index.values, dtype=float)
         x = np.array(pd.to_datetime(df).index.values, dtype=float)
         slope, intercept, _, _, _ = sp.linregress(x,y)
-        # print(y)
-        # slope, intercept = sp.linregress(x,y) 
         trend_df[i] = (x * slope) + intercept
-        # dtw_anomalys_allwells[i] = ds[i] - trend_df[i]
         
-
 # Use pd.concat to construct the DataFrame efficiently
 dtw_anomalys_allwells = pd.concat([ds[i] - trend_df[i] for i in column_list], axis=1)
 

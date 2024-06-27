@@ -1,4 +1,4 @@
-# ~~    Spatial Analysis Code   ~~
+# === WELL SPATIAL ANALYSIS CODE ===
 # Written by Danielle Tadych
 
 # The purpose of this script is to create a code to spatially analyze all the wells in 
@@ -17,7 +17,6 @@
 # 6. Export pivot tables into .csv's for easy analyzing later
 #       * Note: after reading in packages, skip to line 233 to avoid redoing steps 1-5
 #         or to read in the web .csv's
-# 8. Run Linear regression from custom functions
 
 # %%
 import os

@@ -1,4 +1,4 @@
-# ------ Drought Indice Analysis --------
+# === DROUGHT INDICE PREPROCESSING ===
 # Written by Danielle Tadych, May 2022
 #    modified 06/10/2024
 
@@ -13,7 +13,6 @@
 # Link to download PHDI:
 #   https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/statewide/time-series/2/phdi/1/0/1895-2024
 # %% Load the packages
-import os
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -31,15 +30,13 @@ wet_color = '#b8d3f2'
 
 # %% Read in the files
 filename = 'NOAA_PDSI_Timeseries.csv'
-filepath = os.path.join(inputpath, filename)
-pdsi = pd.read_csv(filepath, header=2)
+pdsi = pd.read_csv(f'{inputpath}/'+filename, header=2)
 pdsi['Date'] = pd.to_datetime(pdsi['Date'], format='%Y%m', errors='coerce').dropna()
 pdsi['In_year'] = pdsi['Date'].dt.year
 pdsi
 
 filename = 'NOAA_PHDI_Timeseries.csv'
-filepath = os.path.join(inputpath, filename)
-phdi = pd.read_csv(filepath, header=2)
+phdi = pd.read_csv(f'{inputpath}/'+filename, header=2)
 phdi['Date'] = pd.to_datetime(phdi['Date'], format='%Y%m', errors='coerce').dropna()
 phdi['In_year'] = phdi['Date'].dt.year
 phdi
@@ -121,7 +118,7 @@ ax.set_ylim(min_y,max_y)
 ax.minorticks_on()
 ax.grid(visible=True,which='major')
 ax.grid(which='minor',color='#EEEEEE', lw=0.8)
-# ax.set_title(name, fontsize=14)
+ax.set_title(name, fontsize=14)
 ax.set_xlabel('Year', fontsize=fsize)
 ax.set_ylabel('Index Values',fontsize=fsize)
 ax.legend(loc = [1.04, 0.40], fontsize = fsize)

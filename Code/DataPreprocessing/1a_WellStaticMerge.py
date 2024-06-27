@@ -1,21 +1,15 @@
-### -- MASTER WELL DATABASE MERGE --
+# === MASTER WELL DATABASE MERGE ===
 # Written by Danielle Tadych
 
-# The purpose of this script is combine the GWSI and Wells55 databases into one
-#   main database.
-
-# Requirements:
-# - Must download data from ADWR GIS database: https://gisdata2016-11-18t150447874z-azwater.opendata.arcgis.com/
-#    > Well_Registry
-#    > GWSI_App
-
-# Data can also be found on our github repo http://doi.org/10.25739/1ckh-tx39
+# The purpose of this script is combine the metadata from GWSI and Wells55 databases into one
+#   main database.  It creates shapefiles and .csv's.
 
 # WORKFLOW:
 # - Create columns in each respective database specifying its origin
 # - Find column they have in common
 # - Merge based on that column
 # - Make GWSI wells the overriding database and fill in the gaps with Wells55
+
 # %%
 import os
 import pandas as pd
@@ -32,7 +26,6 @@ wellfilename = "Well_Registry/Well_Registry.shp"
 Wellfp = os.path.join(shapedir, wellfilename)
 wells55shape = gp.read_file(Wellfp)
 
-# GWSI_fn = "GWSI_SITES.shp"
 GWSI_fn = 'GWSI_App/GWSI_App.shp'
 Wellfp = os.path.join(shapedir, GWSI_fn)
 GWSIshape = gp.read_file(Wellfp)
@@ -137,8 +130,6 @@ wells55_nomin.info()
 # %% Now filter by drill log exisence (not just filed) so we can see which water wells are actually a thing
 wells55_water = wells55_nomin[wells55_nomin['DRILL_LOG'].notna()]
 wells55_water.info()
-
-#df = df[df['EPS'].notna()]
 
 # %% Export both the non-cancelled wells and the water wells
 #  First the non-cancelled wells
