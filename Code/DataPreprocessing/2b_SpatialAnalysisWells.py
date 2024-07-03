@@ -60,7 +60,7 @@ print("Non-cancelled: ", masterdb.crs, "Georegions: ", georeg.crs)
 georeg = georeg.to_crs(epsg=26912)
 masterdb2 = masterdb.set_crs(epsg=26912)
 # %% Merge (~ 40s)
-static_geo = gp.sjoin(masterdb2, georeg, how="inner", op='intersects')
+static_geo = gp.sjoin(masterdb2, georeg, how="inner", predicate='intersects')
 static_geo.head()
 print(str(filename_mdb_nd) + " and " + str(filename_georeg) + " join complete.")
 
@@ -162,3 +162,4 @@ cat_wl2_SW = f
 # %% Going to export all these as CSV's
 cat_wl2_reg.to_csv(outputpath+'/Waterlevels_Regulation_updated_thresh15outliersdeleted.csv')
 cat_wl2_SW.to_csv(outputpath+'/Waterlevels_AccesstoSW_updated_thresh15outliersdeleted.csv')
+# %%
