@@ -4,12 +4,10 @@ dependencies:
   - pandas
   - numpy
   - matplotlib
-  - matplotlib.pyplot
-  - datetime
-  - seaborn
   - geopandas
   - netCDF4
   - xarray
   - rioxarray
   - toolz
   - scipy
+  - openpyxl

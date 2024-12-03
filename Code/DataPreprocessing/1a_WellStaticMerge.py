@@ -58,7 +58,7 @@ gwsi_gdf.head()
 # %% Fixing the date so that 1/1/70 in Wells55 is replaced with NAN
 #   (this is because it is an xml error)
 # https://stackoverflow.com/questions/29247712/how-to-replace-a-value-in-pandas-with-nan
-wells55_gdf['INSTALLED'] = wells55_gdf['INSTALLED'].replace(['1970-01-01'], np.NaN)
+wells55_gdf['INSTALLED'] = wells55_gdf['INSTALLED'].replace(['1970-01-01'], np.nan)
 wells55_gdf['INSTALLED'].unique()
 
 
