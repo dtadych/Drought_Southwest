@@ -241,7 +241,7 @@ def correlation_test_2y(water_dataset1, water_dataset2, drought_dataset, drought
     ax.set_xlabel(drought_indice, fontsize = 14)
     ax2.set_ylabel(vertical_axis_label1, fontsize = 14)
     ax.set_ylabel(vertical_axis_label2, fontsize = 14)  # Set label for the secondary axis
-    ax.set_title('Comparing ' + drought_indice + ' with DTW and GRACE Anomalies\n \n'+subplot_title+')', loc='left', fontsize = 14,pad=15)
+    ax.set_title('Comparing ' + drought_indice + ' with DTW and GRACE Anomalies\n \n'+subplot_title, loc='left', fontsize = 14,pad=15)
     fig.set_dpi(600)
 
     # Combine legends for both axes
@@ -392,7 +392,7 @@ def correlation_test_2y_savefig(water_dataset1, water_dataset2, drought_dataset,
     ax.set_xlabel(drought_indice, fontsize = 14)
     ax2.set_ylabel(vertical_axis_label1, fontsize = 14)
     ax.set_ylabel(vertical_axis_label2, fontsize = 14)  # Set label for the secondary axis
-    ax.set_title('Comparing ' + drought_indice + ' with DTW and GRACE Anomalies\n \n'+subplot_title+')', loc='left', fontsize = 14,pad=15)
+    ax.set_title('Comparing ' + drought_indice + ' with DTW and GRACE Anomalies\n \n'+subplot_title, loc='left', fontsize = 14,pad=15)
     fig.set_dpi(600)
 
     # Combine legends for both axes
